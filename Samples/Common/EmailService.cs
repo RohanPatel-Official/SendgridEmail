@@ -1,13 +1,16 @@
 ﻿using Microsoft.Extensions.Options;
 using SendGrid;
 using SendGrid.Helpers.Mail;
-using SendGrid.Helpers.Mail.Model;
-using System.Net.Mail;
 
 namespace AzureSendgridSample.Common
 {
 
-    public class EmailService
+    public interface IEmailService
+    {
+        Task SendEmailAsync(string toEmail, string subject, string message, string htmlMessage,
+            List<EmailAttachment> attachments = null, string ccEmail = null, string bccEmail = null);
+    }
+    public class EmailService : IEmailService
     {
         private readonly EmailSettings _emailSettings;
 
@@ -16,11 +19,11 @@ namespace AzureSendgridSample.Common
             _emailSettings = emailSettings.Value;
         }
 
-        public async Task SendEmailAsync(string toEmail, string subject, string message, string htmlMessage, 
+        public async Task SendEmailAsync(string toEmail, string subject, string message, string htmlMessage,
             List<EmailAttachment> attachments = null, string ccEmail = null, string bccEmail = null)
         {
             var client = new SendGridClient(_emailSettings.SendGridApiKey);
-            var from = new EmailAddress("your-email@example.com", "Your Name");
+            var from = new EmailAddress("rohan.patel.dev@gmail.com", "Testing from local .Net");
             var to = new EmailAddress(toEmail);
             var msg = MailHelper.CreateSingleEmail(from, to, subject, message, htmlMessage);
 
@@ -45,6 +48,6 @@ namespace AzureSendgridSample.Common
             var response = await client.SendEmailAsync(msg);
         }
 
-        
+
     }
 }

@@ -1,14 +1,16 @@
-﻿namespace AzureSendgridSample.Common
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace AzureSendgridSample.Common
 {
     public class EmailRequest
     {
         public string ToEmail { get; set; }
         public string Subject { get; set; }
         public string Message { get; set; }
-        public string CcEmail { get; set; }
-        public string BccEmail { get; set; }
-        public string HTMLMessage { get; set; }
-        public List<AttachmentRequest> Attachments { get; set; }
+        public string CcEmail { get; set; } = string.Empty;
+        public string BccEmail { get; set; } = string.Empty;
+        public string HTMLMessage { get; set; } = string.Empty;
+        public List<AttachmentRequest> Attachments { get; set; } = new List<AttachmentRequest> ();
     }
 
     public class AttachmentRequest
